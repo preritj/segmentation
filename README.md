@@ -6,7 +6,7 @@ This repository contains tensorflow implemenation of two models for semantic seg
 ![unet](./misc/unet.png)
 There are a few minor differences in my implementation. I have used 'same' padding to simplify things. For the upsampling, I have simply used `tf.image.resize_images` function (see [layers_unet.py](./layers_unet.py)) . The full transpose convolution (deconvolution) layer is implemented for FCN described next. 
 
-* **FCN** with **global convolution network**  (https://arxiv.org/abs/1703.02719) : The network can be found in [fcn_gcn_net.py](./fcn_gcn_net.py). Here is the architecture which I have borrowed from the paper :
+* **FCN** with **global convolution**  (https://arxiv.org/abs/1703.02719) : The network can be found in [fcn_gcn_net.py](./fcn_gcn_net.py). Here is the architecture which I have borrowed from the paper :
 ![fcn_gcn](./misc/fcn_gcn.png)
 Again, there are a few minor differences in my implementation. In particular, I have used VGG style encoder instead of ResNet blocks. All the layers/blocks used in the architecture (including the deconvolution layer) can be found in [layers_fcn_gcn_net.py](./layers_fcn_gcn_net.py).
 
