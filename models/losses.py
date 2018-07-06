@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 
-def dice_coef(y_true, y_pred, axis=None, smooth = 0.001):
+def dice_coef(y_true, y_pred, axis=None, smooth=0.001):
     if axis is None:
         axis=[1,2]
     y_true_f = tf.cast(y_true, dtype=tf.float32)
