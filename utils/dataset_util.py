@@ -9,56 +9,47 @@ def random_int(maxval, minval=0):
         shape=[], minval=minval, maxval=maxval, dtype=tf.int32)
 
 
-def rotate(image, k):
-    # k = np.random.randint(0, 4)
-    if k > 0:
-        image = tf.image.rot90(image, k)
-    return image
+def random_rotate(image, mask):
+    """random rotations in multiples of 90 degrees"""
+    k = random_int(4)
+    image = tf.image.rot90(image, k)
+    mask = tf.image.rot90(mask, k)
+    return image, mask
 
 
-def flip_left_right(img):
-    # random_var = random_int(2)
-    # random_var = tf.cast(random_var, tf.bool)
-    # flipped_img = tf.cond(random_var,
-    #                       true_fn=lambda: tf.image.flip_left_right(img),
-    #                       false_fn=lambda: tf.identity(img))
-    # mask = tf.expand_dims(mask, axis=2)
-    # flipped_mask = tf.cond(random_var,
-    #                        true_fn=lambda: tf.image.flip_left_right(mask),
-    #                        false_fn=lambda: tf.identity(mask))
-    # flipped_mask = tf.squeeze(flipped_mask)
-    # if weights is None:
-    #     return flipped_img, flipped_mask
-    # weights = tf.expand_dims(mask, axis=2)
-    # flipped_weights = tf.cond(
-    #     random_var,
-    #     true_fn=lambda: tf.image.flip_left_right(weights),
-    #     false_fn=lambda: tf.identity(weights))
-    # flipped_weights = tf.squeeze(flipped_weights)
-    flipped_image = tf.image.flip_left_right(img)
-    return flipped_image
+def random_flip_left_right(img, mask):
+    random_var = random_int(2)
+    random_var = tf.cast(random_var, tf.bool)
+    flipped_img = tf.cond(random_var,
+                          true_fn=lambda: tf.image.flip_left_right(img),
+                          false_fn=lambda: tf.identity(img))
+    mask = tf.expand_dims(mask, axis=2)
+    flipped_mask = tf.cond(random_var,
+                           true_fn=lambda: tf.image.flip_left_right(mask),
+                           false_fn=lambda: tf.identity(mask))
+    return flipped_img, flipped_mask
 
 
-def random_brightness(image):
+def random_brightness(image, mask):
     image = tf.image.random_brightness(
         image,
         max_delta=0.1)
-    return image
+    return image, mask
 
 
-def random_contrast(image):
+def random_contrast(image, mask):
     image = tf.image.random_contrast(
         image,
         lower=0.9,
         upper=1.1)
-    return image
+    return image, mask
 
 
-def random_hue(image):
+def random_hue(image, mask):
     image = tf.image.random_hue(
         image,
         max_delta=0.1)
-    return image
+    return image, mask
 
 
 # def resize(image, keypoints, bbox, mask,
@@ -75,9 +66,10 @@ def random_hue(image):
 #     new_mask = tf.squeeze(new_mask)
 #     return new_image, keypoints, bbox, new_mask
 
+
 ###################################################
 # Some other potentially useful functions
-
+###################################################
 def rle_encode(mask_image):
     pixels = mask_image.flatten()
     # We avoid issues with '1' at the start or end (at the corners of
